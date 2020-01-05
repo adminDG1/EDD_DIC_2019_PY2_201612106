@@ -5,6 +5,18 @@
  */
 package proyecto2;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author chana
@@ -17,7 +29,55 @@ public class Log extends javax.swing.JFrame {
     public Log() {
         initComponents();
     }
+    
+    /////////////////////////////Metodos Autor ////////////////////////////////////////
+    
+        public  void ingresarUsuarios() throws Exception{
+             // Create ObjectMapper object.
+        ObjectMapper mapper = new ObjectMapper();
+        mapper.enable(SerializationFeature.INDENT_OUTPUT);
+    
+      String getDatos = readFileAsString("Usuarios.json");
+       List < String > progLangs = new ArrayList < > ();
+        progLangs = mapper.readValue(getDatos, List.class);
+        
+        for (Iterator < String > iterator = progLangs.iterator(); iterator.hasNext();) { // obtengo json de usuarios
+             String json = mapper.writeValueAsString(iterator.next()); //
+             
+             ObjectMapper mapper2 = new ObjectMapper();
+             mapper2.enable(SerializationFeature.INDENT_OUTPUT);
+            
+             @SuppressWarnings("unchecked")
+             Map < String, Integer > days = mapper2.readValue(json, Map.class);
+             
+             for (Map.Entry < String, Integer > day: days.entrySet()) { // recorre las caracteristicas de cada usuario
+             
+                 if (day.getKey() == "Nombre") {
+                     String daystring = day.getValue()+"";
+                     System.out.println("Name" + "=" +daystring );
+                 } else if (day.getKey() == "Apellido") {
+                     System.out.println("LastName" + "=" + day.getValue());
+                 } else if (day.getKey() == "Carnet") {
+                     System.out.println("ID" + "=" + day.getValue());
+                 } else if (day.getKey() == "Password") {
+                     System.out.println("Pass" + "=" + day.getValue());
+                 }
+            
+            }
+             
+             System.out.println("//////finJsonUsuario");
+        }
 
+    } // fin Metodo ingresrUsuarios
+    
+      public String readFileAsString(String fileName)throws Exception 
+  { 
+    String data = ""; 
+    data = new String(Files.readAllBytes(Paths.get(fileName))); 
+    return data; 
+  } // fin metodo readFileAsString
+      
+//////////////////////////////////////////////////////////////////////////////////////
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -27,21 +87,136 @@ public class Log extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        lblTItulo = new javax.swing.JLabel();
+        lblCarnet = new javax.swing.JLabel();
+        txtCarnet = new javax.swing.JTextField();
+        jLabel1 = new javax.swing.JLabel();
+        pfContrasena = new javax.swing.JPasswordField();
+        btnIngresa = new javax.swing.JButton();
+        btnCargar = new javax.swing.JButton();
+
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setBackground(new java.awt.Color(0, 0, 0));
+
+        lblTItulo.setFont(new java.awt.Font("Dialog", 1, 18)); // NOI18N
+        lblTItulo.setText("Login ");
+
+        lblCarnet.setBackground(new java.awt.Color(153, 153, 153));
+        lblCarnet.setForeground(new java.awt.Color(0, 0, 0));
+        lblCarnet.setText("Carnet Usuario");
+
+        jLabel1.setBackground(new java.awt.Color(153, 153, 153));
+        jLabel1.setForeground(new java.awt.Color(0, 0, 0));
+        jLabel1.setText("Contrasena Usuario");
+
+        pfContrasena.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                pfContrasenaActionPerformed(evt);
+            }
+        });
+
+        btnIngresa.setBackground(new java.awt.Color(0, 153, 153));
+        btnIngresa.setForeground(new java.awt.Color(255, 255, 255));
+        btnIngresa.setText("Ingresa");
+        btnIngresa.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnIngresaActionPerformed(evt);
+            }
+        });
+
+        btnCargar.setBackground(new java.awt.Color(153, 153, 153));
+        btnCargar.setForeground(new java.awt.Color(255, 255, 255));
+        btnCargar.setText("Cargar Usuario");
+        btnCargar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCargarActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 400, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(btnCargar))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(250, 250, 250)
+                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 122, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(207, 207, 207)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(txtCarnet)
+                            .addComponent(pfContrasena, javax.swing.GroupLayout.DEFAULT_SIZE, 195, Short.MAX_VALUE)))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(254, 254, 254)
+                        .addComponent(btnIngresa, javax.swing.GroupLayout.PREFERRED_SIZE, 104, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(267, 267, 267)
+                        .addComponent(lblCarnet, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(280, 280, 280)
+                        .addComponent(lblTItulo)))
+                .addContainerGap(257, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 300, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(btnCargar)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(lblTItulo, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(lblCarnet, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(txtCarnet, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(28, 28, 28)
+                .addComponent(jLabel1)
+                .addGap(29, 29, 29)
+                .addComponent(pfContrasena, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(34, 34, 34)
+                .addComponent(btnIngresa, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(34, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void pfContrasenaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pfContrasenaActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_pfContrasenaActionPerformed
+
+    private void btnIngresaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnIngresaActionPerformed
+        // TODO add your handling code here:
+        if (txtCarnet.getText().equals("") || pfContrasena.getPassword().equals("")) {
+            JOptionPane.showMessageDialog(null,"Faltan Campos");
+        } else
+        {
+            /*
+            String contraHash = obtenerContra();
+            String carnetHash = obtenerCarnet();
+            
+            */
+            if (txtCarnet.getText().equals("usuario") && pfContrasena.getText().equals("123")) {
+                JOptionPane.showMessageDialog(null,"Bienvenido Admin "+txtCarnet.getText());
+                this.dispose(); // oculta login
+                ModuloAdmin modAdmin = new ModuloAdmin();
+                modAdmin.setVisible(true); // visualizo Modulo Aprendizaje
+                
+            }
+        } // fin if else 1
+    }//GEN-LAST:event_btnIngresaActionPerformed
+
+    private void btnCargarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCargarActionPerformed
+        try {
+            // TODO add your handling code here:
+            ingresarUsuarios();
+        } catch (Exception ex) {
+            Logger.getLogger(Log.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_btnCargarActionPerformed
 
     /**
      * @param args the command line arguments
@@ -79,5 +254,12 @@ public class Log extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnCargar;
+    private javax.swing.JButton btnIngresa;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel lblCarnet;
+    private javax.swing.JLabel lblTItulo;
+    private javax.swing.JPasswordField pfContrasena;
+    private javax.swing.JTextField txtCarnet;
     // End of variables declaration//GEN-END:variables
 }
